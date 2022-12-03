@@ -13,7 +13,12 @@ def priority(i):
     return o-38
 
 if __name__ == "__main__":
-    with open('testinput.txt','r') as input:
-        intersections = [intersection(getContents(line.rstrip())) for line in input]
+    with open('input.txt','r') as input:
+        lines = [line.rstrip() for line in input]
 
-    print(sum([priority(i) for i in intersections]))
+    intersections = [intersection(getContents(l)) for l in lines]
+    groups = [lines[i:i+3] for i in range(0,len(lines),3)]
+    badges = [intersection(g) for g in groups]
+    totalbadges = sum([priority(b) for b in badges])
+    totalpriority = sum([priority(i) for i in intersections])
+    print(f"All priorities:{totalpriority}, badges: {totalbadges}")
