@@ -1,8 +1,10 @@
 # TLFGBZHCN for part 1
+# QRQFHFWCL for part 2
 
-def move(crates, source , dest):
-    c = crates[source].pop()
-    crates[dest].append(c)
+def move(crates, num, source , dest):
+    stack = [crates[source].pop() for m in range(num)]
+    stack.reverse()
+    [crates[dest].append(m) for m in stack]
 
 if __name__ == "__main__":
     with open("input.txt",'r') as input:
@@ -31,8 +33,7 @@ if __name__ == "__main__":
         for line in movetext:
             split = line.split(' ')
             (num, source, dest) = int(split[1]), int(split[3]) -1 , int(split[5]) -1
-            for m in range(num):
-                move(crates,source,dest)
+            move(crates, num, source,dest)
 
     tops = "".join([c[-1] for c in crates])
     print(tops)
