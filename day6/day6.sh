@@ -1,0 +1,1 @@
+SIZE=4; LENGTH=`wc -m < input.txt`; (for a in `seq 1 $((LENGTH-SIZE))`; do echo $a : `cat input.txt | cut -b $((a))-$((a+SIZE-1)) | fold -w1 | sort | uniq |  wc -l`; done) | grep -m 1 ": $SIZE" | awk -v s="$SIZE" '{print $1 + s - 1}'
