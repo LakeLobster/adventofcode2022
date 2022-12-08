@@ -1,8 +1,11 @@
 #part 1 = 1715
-
+#part 2 = 374400
 import numpy as np
+from functools import reduce
+from operator import mul
 
-def num_visible_trees(row,spotrow):
+
+def num_visible_trees(row, spotrow):
     count = 1 if not spotrow[0] else 0
     spotrow[0] = True
     max = row[0]
@@ -13,17 +16,33 @@ def num_visible_trees(row,spotrow):
             max = row[tree]
     return count
 
+def sightline(x, y, direction,trees):
+    visible = 0
+    max = trees[x, y]
+    (x, y) = (x+direction[0], y+direction[1])
+    while 0 <= x < trees.shape[0] and 0 <= y < trees.shape[1]:
+        tree = trees[x, y]
+        if tree < max:
+            visible += 1
+        else:
+            visible += 1
+            return visible
+        (x, y) = (x + direction[0], y + direction[1])
+    return visible
 
 if __name__ == "__main__":
     with open("input.txt",'r') as input:
         trees = np.array([ [int(t) for t in list(line.rstrip())] for line in input ])
         spotted = np.zeros(trees.shape, dtype=np.bool)
     total = 0
-    print(trees.shape)
-    for i in range(4):
-        for row in range(trees.shape[0]):
-             total = total + num_visible_trees(trees[row], spotted[row])
-        trees = np.rot90(trees)
-        spotted = np.rot90(spotted)
-    print(total)
+    maxtree = 0
+    directions = [(-1, 0), (0, -1), (0, 1), (1, 0)] # N W E S
+    for x in range(trees.shape[0]):
+        for y in range(trees.shape[1]):
+            sightlines = []
+            for axis in range(4):
+                sightlines.append(sightline(x, y, directions[axis], trees))
+            maxtree = max(maxtree, reduce(mul, sightlines, 1))
+
+    print(maxtree)
 
